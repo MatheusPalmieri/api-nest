@@ -1,0 +1,27 @@
+import { NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { NoteRepository } from '../../repositories/noteRepository';
+
+interface GetNoteRequest {
+  noteId: string;
+  userId: string;
+}
+
+export class GetNoteUseCase {
+  constructor(private noteRepository: NoteRepository) {}
+
+  async execute({ noteId, userId }: GetNoteRequest) {
+    const note = await this.noteRepository.findById(noteId);
+
+    if (!note) {
+      throw new NotFoundException('Note not found');
+    }
+
+    if (note.userId !== userId) {
+      throw new UnauthorizedException(
+        'You are not authorized to get this note',
+      );
+    }
+
+    return note;
+  }
+}
