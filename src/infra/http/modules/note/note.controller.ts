@@ -46,30 +46,12 @@ export class NoteController {
     return NoteViewModel.toHttp(note);
   }
 
-  @Get(':id')
-  async getNote(
-    @Request() request: AuthenticatedRequestModel,
-    @Param('id') noteId: string,
-  ) {
-    console.log('hit 2');
-    const userId = request.user.id;
-
-    const note = await this.getNoteUseCase.execute({
-      userId,
-      noteId,
-    });
-
-    return NoteViewModel.toHttp(note);
-  }
-
   @Get()
   async getManyNote(
     @Request() request: AuthenticatedRequestModel,
     @Query('page') page: number,
     @Query('limit') limit: number,
   ) {
-    console.log('hit 1');
-
     const userId = request.user.id;
 
     const notes = await this.getManyNoteUseCase.execute({
@@ -79,6 +61,21 @@ export class NoteController {
     });
 
     return notes.map((note) => NoteViewModel.toHttp(note));
+  }
+
+  @Get(':id')
+  async getNote(
+    @Request() request: AuthenticatedRequestModel,
+    @Param('id') noteId: string,
+  ) {
+    const userId = request.user.id;
+
+    const note = await this.getNoteUseCase.execute({
+      userId,
+      noteId,
+    });
+
+    return NoteViewModel.toHttp(note);
   }
 
   @Patch(':noteId')
