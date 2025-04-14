@@ -69,7 +69,7 @@ The project follows a clean architecture pattern with:
 
    ```bash
    git clone [repository-url]
-   cd api-nest
+   cd api-notes
    ```
 
 2. **Install dependencies**
