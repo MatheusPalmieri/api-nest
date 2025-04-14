@@ -14,7 +14,7 @@ export class Note {
   constructor(
     props: Replace<
       NoteProps,
-      { createdAt?: Date; description?: string | null }
+      { description?: string | null; createdAt?: Date }
     >,
     id?: string,
   ) {

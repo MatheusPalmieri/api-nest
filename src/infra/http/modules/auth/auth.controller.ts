@@ -1,6 +1,5 @@
 import {
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -11,7 +10,6 @@ import { SignInUseCase } from 'src/modules/auth/signInUseCase/signInUseCase';
 import { Public } from './decorators/isPublic';
 import { LocalAuthGuard } from './guards/localAuthGuard.guard';
 import { AuthRequestModel } from './models/authRequestModel';
-import { AuthenticatedRequestModel } from './models/authenticatedRequestModel';
 
 @Controller('auth')
 export class AuthController {
@@ -29,10 +27,5 @@ export class AuthController {
     return {
       token: access_token,
     };
-  }
-
-  @Get()
-  async test(@Request() request: AuthenticatedRequestModel) {
-    return request.user;
   }
 }
