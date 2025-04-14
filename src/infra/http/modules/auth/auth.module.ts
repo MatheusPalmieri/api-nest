@@ -1,9 +1,9 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { DatabaseModule } from 'src/infra/database/database.module';
-import { SignInUseCase } from 'src/modules/auth/signInUseCase/signInUseCase';
 import { JwtStrategy } from 'src/modules/auth/strategies/jwt.strategy';
 import { LocalStrategy } from 'src/modules/auth/strategies/local.strategy';
+import { SignInUseCase } from 'src/modules/auth/useCases/signInUseCase/signInUseCase';
 import { ValidateUserUseCase } from 'src/modules/auth/useCases/validateUserUseCase/validateUserUseCase';
 import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
