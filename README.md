@@ -22,54 +22,229 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# NestJS Notes API
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A robust and secure RESTful API built with NestJS, featuring user authentication, note management, and clean architecture principles.
 
-## Project setup
+## 🚀 Technologies
 
-```bash
-$ npm install
+- **NestJS** - Progressive Node.js framework
+- **TypeScript** - For type-safe code
+- **Prisma** - Modern database ORM
+- **SQLite** - Database
+- **JWT** - For authentication
+- **Bcrypt** - For password hashing
+- **Class Validator** - For request validation
+
+## 🏗️ Architecture
+
+The project follows a clean architecture pattern with:
+
+### Core Modules
+
+- **User Module** - User management and authentication
+- **Note Module** - Note CRUD operations
+- **Auth Module** - Authentication and authorization
+
+### Architecture Layers
+
+- **Controllers** - HTTP request handlers
+- **Use Cases** - Business logic implementation
+- **Repositories** - Data persistence abstraction
+- **Entities** - Domain models
+- **DTOs** - Data transfer objects
+- **View Models** - Response formatting
+- **Guards** - Authentication middleware
+- **Decorators** - Custom validators and metadata
+
+## 🛠️ Prerequisites
+
+- Node.js (v16 or higher)
+- npm or yarn
+- Git
+
+## ⚡ Quick Start
+
+1. **Clone the repository**
+
+   ```bash
+   git clone [repository-url]
+   cd api-nest
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Configure your .env file with:
+
+   ```
+   DATABASE_URL="file:./dev.db"
+   JWT_SECRET="your-secret-key"
+   JWT_EXPIRE="2592000"
+   ```
+
+4. **Setup Database**
+
+   ```bash
+   npx prisma migrate dev
+   ```
+
+5. **Start the application**
+   ```bash
+   npm run dev
+   ```
+
+## 📝 API Endpoints
+
+### Authentication
+
+- POST `/auth/sign-in` - User login
+- POST `/users` - Register new user
+
+### Notes
+
+- GET `/notes` - List all notes (authenticated)
+- GET `/notes/:id` - Get specific note
+- POST `/notes` - Create new note
+- PATCH `/notes/:id` - Update note
+- DELETE `/notes/:id` - Delete note
+
+## 📝 API Documentation
+
+### Swagger Documentation
+
+Access the interactive API documentation at:
+
+```
+http://localhost:3000/api-docs
 ```
 
-## Compile and run the project
+### Available Endpoints
 
-```bash
-# development
-$ npm run start
+#### Authentication
 
-# watch mode
-$ npm run start:dev
+- `POST /auth/sign-in` - Login
+  - Body: `{ "email": "string", "password": "string" }`
+  - Response: `{ "token": "string" }`
 
-# production mode
-$ npm run start:prod
+#### Users
+
+- `POST /users` - Register new user
+  - Body: `{ "name": "string", "email": "string", "password": "string" }`
+  - Response: User object without password
+
+#### Notes
+
+- `GET /notes` - List all notes (authenticated)
+
+  - Query params: `page` (optional), `limit` (optional)
+  - Headers: `Authorization: Bearer <token>`
+  - Response: Array of notes
+
+- `GET /notes/:id` - Get specific note
+
+  - Headers: `Authorization: Bearer <token>`
+  - Response: Note object
+
+- `POST /notes` - Create new note
+
+  - Headers: `Authorization: Bearer <token>`
+  - Body: `{ "title": "string", "description": "string" }`
+  - Response: Created note
+
+- `PATCH /notes/:id` - Update note
+
+  - Headers: `Authorization: Bearer <token>`
+  - Body: `{ "title": "string", "description": "string" }`
+  - Response: Updated note
+
+- `DELETE /notes/:id` - Delete note
+  - Headers: `Authorization: Bearer <token>`
+
+### Error Responses
+
+The API uses consistent error response format:
+
+```json
+{
+  "message": "Error message",
+  "fields": {
+    "fieldName": "Error description"
+  }
+}
 ```
 
-## Run tests
+Common status codes:
 
-```bash
-# unit tests
-$ npm run test
+- `200` - Success
+- `201` - Created
+- `400` - Bad Request
+- `401` - Unauthorized
+- `404` - Not Found
+- `409` - Conflict (e.g., email already exists)
 
-# e2e tests
-$ npm run test:e2e
+## 📦 Project Structure
 
-# test coverage
-$ npm run test:cov
+```
+src/
+├── modules/
+│   ├── auth/
+│   │   ├── useCases/
+│   │   ├── strategies/
+│   │   └── models/
+│   ├── user/
+│   │   ├── entities/
+│   │   ├── repositories/
+│   │   └── useCases/
+│   └── note/
+│       ├── entities/
+│       ├── repositories/
+│       └── useCases/
+├── infra/
+│   ├── database/
+│   │   └── prisma/
+│   └── http/
+│       └── modules/
+├── utils/
+├── exceptions/
+└── main.ts
 ```
 
-## Deployment
+## 🔒 Authentication
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+The API uses JWT tokens for authentication. To access protected endpoints:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+1. Register a user using POST `/users`
+2. Login using POST `/auth/sign-in`
+3. Use the received JWT token in subsequent requests:
+   ```
+   Authorization: Bearer [your-token]
+   ```
+
+## 🧪 Testing
+
+The project includes unit tests for the core business logic. Run tests using:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+npm run test
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 📄 License
+
+This project is [MIT licensed](LICENSE).
+
+---
+
+Made with ❤️ for my portfolio
 
 ## Resources
 

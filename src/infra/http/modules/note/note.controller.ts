@@ -9,6 +9,12 @@ import {
   Query,
   Request,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateNoteUseCase } from 'src/modules/note/useCases/createNoteUseCase/createNoteUseCase';
 import { DeleteNoteUseCase } from 'src/modules/note/useCases/deleteNoteUseCase/deleteNoteUseCase';
 import { EditNoteUseCase } from 'src/modules/note/useCases/editNoteUseCase/editNoteUseCase';
@@ -19,6 +25,8 @@ import { CreateNoteBody } from './dtos/CreateNoteBody';
 import { EditNoteBody } from './dtos/EditNoteBody';
 import { NoteViewModel } from './viewModels/NoteViewModel';
 
+@ApiTags('Notes')
+@ApiBearerAuth()
 @Controller('notes')
 export class NoteController {
   constructor(
@@ -30,6 +38,8 @@ export class NoteController {
   ) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create a new note' })
+  @ApiResponse({ status: 201, description: 'Note created successfully' })
   async createNote(
     @Request() request: AuthenticatedRequestModel,
     @Body() body: CreateNoteBody,
@@ -47,6 +57,8 @@ export class NoteController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'List all notes for authenticated user' })
+  @ApiResponse({ status: 200, description: 'Returns list of notes' })
   async getManyNote(
     @Request() request: AuthenticatedRequestModel,
     @Query('page') page: number,
@@ -64,6 +76,9 @@ export class NoteController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a specific note by ID' })
+  @ApiResponse({ status: 200, description: 'Returns the note' })
+  @ApiResponse({ status: 404, description: 'Note not found' })
   async getNote(
     @Request() request: AuthenticatedRequestModel,
     @Param('id') noteId: string,
@@ -79,6 +94,9 @@ export class NoteController {
   }
 
   @Patch(':noteId')
+  @ApiOperation({ summary: 'Update a note' })
+  @ApiResponse({ status: 200, description: 'Note updated successfully' })
+  @ApiResponse({ status: 404, description: 'Note not found' })
   async editNote(
     @Request() request: AuthenticatedRequestModel,
     @Param('noteId') noteId: string,
@@ -98,6 +116,9 @@ export class NoteController {
   }
 
   @Delete(':noteId')
+  @ApiOperation({ summary: 'Delete a note' })
+  @ApiResponse({ status: 200, description: 'Note deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Note not found' })
   async deleteNote(
     @Request() request: AuthenticatedRequestModel,
     @Param('noteId') noteId: string,
